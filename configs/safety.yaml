@@ -1,0 +1,13 @@
+statement_timeout_ms: 10000
+max_rows: 1000
+allowed_schema: public
+blocked_functions:
+  - pg_sleep
+  - pg_read_file
+  - pg_read_binary_file
+  - lo_import
+  - lo_export
+  - dblink
+  - set_config
+  - pg_terminate_backend
+  - pg_cancel_backend

@@ -695,13 +695,17 @@ def insert_all(
     payment_rows = []
     for o in orders:
         payment_rows.append(
-            (o["id"], o["method"], o["total"], o["pay_status"], o["pay_date"], TX_PAYMENT)
+            (o["id"], None, o["method"], o["total"], o["pay_status"], o["pay_date"], TX_PAYMENT)
         )
         if o["refund"]:
-            _, amount, refund_date = o["refund"]
-            payment_rows.append((o["id"], o["method"], amount, PAY_REFUND, refund_date, TX_REFUND))
+            refund_pid, amount, refund_date = o["refund"]
+            payment_rows.append(
+                (o["id"], refund_pid, o["method"], amount, PAY_REFUND, refund_date, TX_REFUND)
+            )
     bulk(
-        "INSERT INTO thanh_toan (donHangId, phuongThuc, soTien, trangThai, ngayThanhToan, loaiGiaoDich) VALUES %s",
+        """INSERT INTO thanh_toan
+           (donHangId, sanPhamId, phuongThuc, soTien, trangThai, ngayThanhToan, loaiGiaoDich)
+           VALUES %s""",
         payment_rows,
     )
 
@@ -777,7 +781,7 @@ def main() -> None:
     finally:
         connection.close()
 
-    out_path = Path(__file__).with_name("ground_truth.json")
+    out_path = Path(__file__).resolve().parents[1] / "eval" / "ground_truth.json"
     out_path.write_text(json.dumps(ground_truth, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print("\nHoàn tất sinh dữ liệu.")

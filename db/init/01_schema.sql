@@ -194,16 +194,22 @@ COMMENT ON COLUMN chi_tiet_don_hang.thanhTien  IS 'Thành tiền = soLuong * don
 CREATE TABLE thanh_toan (
     id             BIGSERIAL     PRIMARY KEY,                       -- Khóa chính
     donHangId      INT           NOT NULL REFERENCES don_hang(id) ON DELETE CASCADE,
+    sanPhamId      INT           REFERENCES san_pham(id),
     phuongThuc     VARCHAR(30)   NOT NULL,                          -- Phương thức thanh toán
     soTien         NUMERIC(14,2) NOT NULL,                          -- Số tiền giao dịch (VNĐ)
     trangThai      VARCHAR(30)   NOT NULL,                          -- Trạng thái giao dịch
     ngayThanhToan  DATE,                                            -- Ngày giao dịch (NULL nếu chưa hoàn tất)
-    loaiGiaoDich   VARCHAR(20)   NOT NULL DEFAULT 'Thanh toán'      -- Loại giao dịch
+    loaiGiaoDich   VARCHAR(20)   NOT NULL DEFAULT 'Thanh toán',     -- Loại giao dịch
+    CONSTRAINT chk_thanh_toan_hoan_tien_san_pham CHECK (
+        (loaiGiaoDich = 'Hoàn tiền' AND sanPhamId IS NOT NULL)
+        OR (loaiGiaoDich <> 'Hoàn tiền' AND sanPhamId IS NULL)
+    )
 );
 
 COMMENT ON TABLE  thanh_toan                IS 'Giao dịch thanh toán/hoàn tiền. 1 đơn có thể có nhiều giao dịch.';
 COMMENT ON COLUMN thanh_toan.id             IS 'Khóa chính, BIGSERIAL.';
 COMMENT ON COLUMN thanh_toan.donHangId      IS 'FK → don_hang.id. Xóa đơn → tự động xóa giao dịch (CASCADE).';
+COMMENT ON COLUMN thanh_toan.sanPhamId      IS 'FK → san_pham.id. Bắt buộc với Hoàn tiền để truy vết sản phẩm được hoàn; NULL với giao dịch khác.';
 COMMENT ON COLUMN thanh_toan.phuongThuc     IS 'Phương thức thanh toán. VD: COD | Chuyển khoản | Momo | VNPay | Thẻ tín dụng.';
 COMMENT ON COLUMN thanh_toan.soTien         IS 'Số tiền giao dịch (VNĐ).';
 COMMENT ON COLUMN thanh_toan.trangThai      IS 'Trạng thái giao dịch. Giá trị hợp lệ: Chờ xử lý | Thành công | Thất bại | Hoàn tiền.';
@@ -339,6 +345,7 @@ CREATE INDEX idx_chi_tiet_don_hang_don_hang  ON chi_tiet_don_hang(donHangId);
 
 -- Index cho thanh_toan
 CREATE INDEX idx_thanh_toan_don_hang    ON thanh_toan(donHangId);
+CREATE INDEX idx_thanh_toan_san_pham    ON thanh_toan(sanPhamId) WHERE sanPhamId IS NOT NULL;
 CREATE INDEX idx_thanh_toan_ngay        ON thanh_toan(ngayThanhToan);
 
 -- Index cho van_chuyen

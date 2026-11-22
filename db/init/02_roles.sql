@@ -1,7 +1,9 @@
 -- User mà SQL Agent sẽ dùng để truy vấn
-CREATE ROLE vietreport_reader WITH LOGIN PASSWORD 'vietreport_reader_password';
+-- Mật khẩu được Compose truyền bằng biến môi trường, không lưu trong repo.
+\getenv reader_password VIETREPORT_READER_PASSWORD
+CREATE ROLE vietreport_reader WITH LOGIN PASSWORD :'reader_password';
 
-GRANT CONNECT ON DATABASE E-commerce TO vietreport_reader;
+GRANT CONNECT ON DATABASE "E-commerce" TO vietreport_reader;
 
 GRANT USAGE ON SCHEMA public TO vietreport_reader;
 

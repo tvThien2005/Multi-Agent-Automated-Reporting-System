@@ -101,11 +101,27 @@ JOIN san_pham sp ON sp.id = c.sanPhamId
 JOIN danh_muc dm ON dm.id = sp.danhMucId
 WHERE dm.tenDanhMuc = 'Phụ kiện' AND dh.trangThai <> 'Đã hủy';
 
--- 3. Tỷ lệ hoàn tiền của đơn đã giao có sản phẩm 42 so với phần còn lại
+-- 3. Tỷ lệ hoàn tiền đúng sản phẩm 42 so với hoàn tiền của các đơn còn lại.
+WITH delivered AS (
+    SELECT
+        dh.id,
+        EXISTS (
+            SELECT 1 FROM chi_tiet_don_hang c
+            WHERE c.donHangId = dh.id AND c.sanPhamId = 42
+        ) AS co_sp_42
+    FROM don_hang dh
+    WHERE dh.trangThai = 'Đã giao hàng'
+)
 SELECT
-    (EXISTS (SELECT 1 FROM chi_tiet_don_hang c WHERE c.donHangId = dh.id AND c.sanPhamId = 42)) AS co_sp_42,
-    COUNT(*) AS so_don_da_giao,
-    ROUND(AVG((EXISTS (SELECT 1 FROM thanh_toan t WHERE t.donHangId = dh.id AND t.loaiGiaoDich = 'Hoàn tiền'))::int), 3) AS ty_le_hoan
-FROM don_hang dh
-WHERE dh.trangThai = 'Đã giao hàng'
-GROUP BY 1;
+    COUNT(*) FILTER (WHERE co_sp_42) AS so_don_da_giao_co_sp_42,
+    ROUND(AVG((EXISTS (
+        SELECT 1 FROM thanh_toan t
+        WHERE t.donHangId = d.id
+          AND t.loaiGiaoDich = 'Hoàn tiền'
+          AND t.sanPhamId = 42
+    ))::int) FILTER (WHERE co_sp_42), 3) AS ty_le_hoan_sp_42,
+    ROUND(AVG((EXISTS (
+        SELECT 1 FROM thanh_toan t
+        WHERE t.donHangId = d.id AND t.loaiGiaoDich = 'Hoàn tiền'
+    ))::int) FILTER (WHERE NOT co_sp_42), 3) AS ty_le_hoan_cac_don_con_lai
+FROM delivered d;

@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vietreport"
+version = "0.1.0"
+description = "Vietnamese multi-agent automated reporting system"
+requires-python = ">=3.10"
+dependencies = [
+  "psycopg2-binary>=2.9.9",
+  "python-dotenv>=1.0.0",
+  "sqlglot>=25.0.0",
+  "pydantic-settings>=2.0.0",
+  "PyYAML>=6.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+  "ruff>=0.8.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+  "db: requires a running PostgreSQL database seeded with VietReport data",
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+extend-exclude = [".venv", "postgres_data"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]

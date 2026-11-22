@@ -1,0 +1,62 @@
+# configs/models.yaml
+baseline:
+  provider: groq
+  base_url: https://api.groq.com/openai/v1
+  model: openai/gpt-oss-120b
+  api_key_env: BASELINE_API_KEY
+  temperature: 0.0
+  max_tokens: 1200
+  timeout_seconds: 60
+
+sql:
+  provider: groq
+  base_url: https://api.groq.com/openai/v1
+  model: openai/gpt-oss-120b
+  api_key_env: SQL_AGENT_API_KEY
+  temperature: 0.0
+  max_tokens: 1200
+  timeout_seconds: 60
+
+planner:
+  provider: groq
+  base_url: https://api.groq.com/openai/v1
+  model: openai/gpt-oss-120b
+  api_key_env: PLANNER_API_KEY
+  temperature: 0.0
+  max_tokens: 1200
+  timeout_seconds: 60
+
+analyst:
+  provider: groq
+  base_url: https://api.groq.com/openai/v1
+  model: openai/gpt-oss-120b
+  api_key_env: ANALYTICS_API_KEY
+  temperature: 0.0
+  max_tokens: 1200
+  timeout_seconds: 60
+
+writer:
+  provider: groq
+  base_url: https://api.groq.com/openai/v1
+  model: openai/gpt-oss-120b
+  api_key_env: WRITER_API_KEY
+  temperature: 0.2
+  max_tokens: 1600
+  timeout_seconds: 60
+
+verifier:
+  provider: groq
+  base_url: https://api.groq.com/openai/v1
+  model: openai/gpt-oss-120b
+  api_key_env: VERIFIER_API_KEY
+  temperature: 0.0
+  max_tokens: 1200
+  timeout_seconds: 60
+
+agents:
+  baseline_sql: baseline
+  sql_agent: sql
+  planner: planner
+  analyst: analyst
+  writer: writer
+  verifier: verifier

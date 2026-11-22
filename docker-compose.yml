@@ -4,9 +4,10 @@ services:
     container_name: vietreport_postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: E-commerce
-      POSTGRES_USER: vietreport_admin
-      POSTGRES_PASSWORD: vietreport_admin_password
+      POSTGRES_DB: ${POSTGRES_DB:-E-commerce}
+      POSTGRES_USER: ${POSTGRES_ADMIN_USER:-vietreport_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:?Set POSTGRES_ADMIN_PASSWORD in .env}
+      VIETREPORT_READER_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
     ports:
       - "5432:5432"
     volumes:

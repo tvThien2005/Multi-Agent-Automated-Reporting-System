@@ -118,6 +118,41 @@ Lưu ý trong README: đây là dữ liệu mô phỏng sinh bằng script, khô
 
 Nếu multi-agent không hơn baseline ở chỉ số nào đó, vẫn ghi lại và phân tích nguyên nhân. Nếu dùng LLM làm giám khảo thì ghi rõ giới hạn (thiên lệch, không thay được người chấm).
 
+### Định dạng `eval/questions.jsonl`
+
+Mỗi dòng là một test case JSON độc lập; không đặt dấu phẩy giữa các dòng. Các trường tối thiểu gồm `id`, `question_vi`, `difficulty`, `answerable`, và `gold_sql`. Khuyến nghị thêm `expected_columns` và `tags` để phân tích lỗi theo loại truy vấn.
+
+Ví dụ câu trả lời được:
+
+```json
+{
+  "id": "Q001",
+  "question_vi": "Tổng doanh thu đơn hàng đã giao trong tháng 10 năm 2026 là bao nhiêu?",
+  "difficulty": "easy",
+  "answerable": true,
+  "gold_sql": "SELECT COALESCE(SUM(ct.so_luong * ct.don_gia), 0) AS tong_doanh_thu\nFROM don_hang dh\nJOIN chi_tiet_don_hang ct ON ct.don_hang_id = dh.id\nWHERE dh.trang_thai = 'da_giao'\n  AND dh.ngay_dat >= DATE '2026-10-01'\n  AND dh.ngay_dat < DATE '2026-11-01';",
+  "expected_columns": ["tong_doanh_thu"],
+  "tags": ["aggregation", "date_filter"]
+}
+```
+
+Ví dụ câu phải từ chối vì schema không hỗ trợ:
+
+```json
+{
+  "id": "Q002",
+  "question_vi": "Doanh thu theo kênh TikTok Shop trong quý 3 là bao nhiêu?",
+  "difficulty": "reject",
+  "answerable": false,
+  "gold_sql": null,
+  "expected_columns": [],
+  "tags": ["unsupported_dimension"],
+  "expected_refusal_reason": "Schema không có dữ liệu về kênh bán hàng hoặc TikTok Shop."
+}
+```
+
+`gold_sql` là truy vấn chuẩn do người viết benchmark xác nhận chạy đúng trên dữ liệu seed. Khi chấm, chạy SQL của agent và `gold_sql`, rồi so sánh tập kết quả thay vì so sánh chuỗi SQL.
+
 ## 5. Cấu trúc repo
 
 ```
@@ -197,10 +232,3 @@ Giả định làm đều khoảng 2-3 giờ mỗi ngày trong tuần và nhiề
 - Designed a \[N\]-question Vietnamese Text-to-SQL benchmark with a locked held-out set; execution accuracy reached \[X\]% overall and \[Y\]% on hard queries, and self-repair raised it from \[A\]% to \[B\]%.
 - Added a verifier that checks every number against query results; numeric accuracy in reports rose from \[P\]% to \[Q\]%, and the system recovered \[R\]% of planted insights.
 - Compared against a single-agent baseline on accuracy, cost, and latency using Langfuse traces; containerized with Docker Compose and tested in GitHub Actions CI.
-
-## 10. Việc cần làm ngay hôm nay
-
-1. Tạo repo và khung thư mục ở mục 5.
-2. Viết schema ban đầu cho 8-10 bảng.
-3. Chọn nhà cung cấp LLM và kiểm tra giới hạn gói miễn phí hiện tại.
-4. Viết 10 câu hỏi đầu tiên kèm gold SQL để chốt định dạng `questions.jsonl`.

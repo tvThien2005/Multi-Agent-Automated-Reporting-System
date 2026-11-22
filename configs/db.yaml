@@ -1,0 +1,9 @@
+host_env: POSTGRES_HOST
+port_env: POSTGRES_PORT
+database_env: POSTGRES_DB
+reader_user_env: POSTGRES_USER
+reader_password_env: POSTGRES_PASSWORD
+default_host: localhost
+default_port: 5432
+default_database: E-commerce
+default_reader_user: vietreport_reader

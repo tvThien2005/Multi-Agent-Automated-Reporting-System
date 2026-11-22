@@ -1,0 +1,1 @@
+"""VietReport application package."""
