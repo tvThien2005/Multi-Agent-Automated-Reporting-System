@@ -1,0 +1,140 @@
+# ==============================================================================
+# Environment Variables & Secrets (Bảo mật - Tuyệt đối không đẩy lên GitHub)
+# ==============================================================================
+.env
+.env.*
+!.env.example
+!.env.template
+*.pem
+*.key
+*.cert
+*.crt
+secrets/
+credentials.json
+
+# ==============================================================================
+# Python & Bytecode
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ==============================================================================
+# Virtual Environments (Môi trường ảo)
+# ==============================================================================
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ==============================================================================
+# Testing, Coverage & Linter caches (Pytest, Ruff, Mypy, Coverage)
+# ==============================================================================
+.pytest_cache/
+.coverage
+.coverage.*
+nosetests.xml
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+.ruff_cache/
+.mypy_cache/
+
+# ==============================================================================
+# Jupyter Notebooks & Data Exploration
+# ==============================================================================
+.ipynb_checkpoints/
+*-checkpoint.ipynb
+
+# ==============================================================================
+# Logs & Tracing (LangChain, LangGraph, FastAPI, Loguru, etc.)
+# ==============================================================================
+*.log
+logs/
+.langchain/
+.langsmith/
+.langfuse/
+
+# ==============================================================================
+# Database / Docker Volumes / Local Data Dumps
+# ==============================================================================
+postgres_data/
+pgdata/
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.sql.gz
+
+# ==============================================================================
+# Generated Output & Reports (HTML/PDF xuất ra từ hệ thống báo cáo)
+# ==============================================================================
+reports/output/
+reports/generated/
+outputs/
+export/
+*.pdf
+!docs/*.pdf
+
+# ==============================================================================
+# Docker local overrides
+# ==============================================================================
+docker-compose.override.yml
+
+# ==============================================================================
+# IDEs & Code Editors
+# ==============================================================================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ==============================================================================
+# Operating System Files
+# ==============================================================================
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.fuse_hidden*
+.directory

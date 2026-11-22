@@ -1,0 +1,36 @@
+{
+  "anchor_date": "2026-11-12",
+  "seed": 20261112,
+  "insights": {
+    "mien_trung_doanh_thu_giam": {
+      "mo_ta": "Doanh thu (tongTien, bỏ đơn hủy) Miền Trung 90 ngày gần nhất so với 90 ngày liền trước",
+      "gan_nhat_90_ngay": 5005098100,
+      "90_ngay_truoc_do": 10720666250,
+      "phan_tram_thay_doi": -53.3,
+      "phan_tram_thay_doi_toan_he_thong": -14.4
+    },
+    "phu_kien_tang_dot_bien": {
+      "mo_ta": "Doanh thu dòng sản phẩm danh mục Phụ kiện 60 ngày gần nhất so với 60 ngày liền trước (bỏ đơn hủy)",
+      "gan_nhat_60_ngay": 1905384000,
+      "60_ngay_truoc_do": 1172491000,
+      "phan_tram_thay_doi": 62.5
+    },
+    "san_pham_42_hoan_tien_cao": {
+      "mo_ta": "Tỷ lệ đơn đã giao có hoàn tiền: đơn chứa sản phẩm 42 so với phần còn lại; điểm đánh giá trung bình",
+      "san_pham_id": 42,
+      "so_don_da_giao_co_sp_42": 304,
+      "ty_le_hoan_sp_42": 0.128,
+      "ty_le_hoan_cac_don_con_lai": 0.019,
+      "diem_danh_gia_tb_sp_42": 2.58,
+      "diem_danh_gia_tb_cac_sp_khac": 3.89
+    }
+  },
+  "dirty_data": {
+    "khach_hang_thieu_hoTen": 78,
+    "khach_hang_thieu_email": 151,
+    "khach_hang_thieu_soDienThoai": 242,
+    "khach_hang_trung_thong_tin": 30,
+    "don_ton_dong_cu_hon_4_ngay": 312,
+    "don_da_huy": 1579
+  }
+}

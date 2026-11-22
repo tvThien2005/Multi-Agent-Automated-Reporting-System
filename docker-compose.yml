@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: vietreport_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: E-commerce
+      POSTGRES_USER: vietreport_admin
+      POSTGRES_PASSWORD: vietreport_admin_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vietreport_admin -d E-commerce"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:
